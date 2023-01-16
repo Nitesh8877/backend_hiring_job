@@ -12,6 +12,8 @@ app.use(express.urlencoded({extended:false}));
 require("./routes/auth.routes")(app)
 require("./routes/company.routes")(app)
 require("./routes/students.routes")(app)
+require("./routes/jobs.routes")(app);
+require("./routes/profile.routes")(app);
 app.listen(process.env.PORT,()=>console.log("Listting at localhost :",process.env.PORT));
 
 module.exports=app;

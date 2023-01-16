@@ -9,7 +9,7 @@ const { ADMIN, COMPANY, STUDENT } = require('../constants/roles');
 exports.signup = async (req, res) => {
     const { role } = req.params
     const { firstName, lastName, email, password } = req.body
-
+console.log(role)
     // email => email : 'vivek@gmail.com'
     const isEmailExistInAdmins = await Admin.findOne({ email });
     const isEmailExistInCompanies = await Company.findOne({ email });
@@ -63,6 +63,27 @@ exports.signup = async (req, res) => {
             })
             .catch(error => res.status(400).send({
                 message: "Internal Server Error!",error
+            }))
+    }
+    else if (role === ADMIN) {
+        const admin = new Admin({
+            firstName,
+            lastName,
+            email,
+            password: hash
+        })
+
+        const token = jwt.sign({ _id: admin._id, role }, process.env.JWT_SECRET)
+
+        admin
+            .save()
+            .then(data => {
+                const user = data.toObject()
+                delete user.password
+                res.status(201).send({ user, token })
+            })
+            .catch(error => res.status(400).send({
+                message: "Internal Server Error!"
             }))
     }
 

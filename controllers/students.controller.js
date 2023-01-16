@@ -7,9 +7,10 @@ exports.findAll=(req,res)=>{
             message:"Access Denied"
         })
     }
+    console.log(req.user.role);
     Student.find({})
     .then(students=>res.status(200).send(students))
-    .cathc(error=>res.status(400).send({
+    .catch(error=>res.status(400).send({
         message:"Internal server error"
     }))
 }
